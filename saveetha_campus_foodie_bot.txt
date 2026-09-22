@@ -1,0 +1,29 @@
+from google import genai
+
+client = genai.Client(api_key="xyz")
+
+
+with open("saveetha_university_infos.txt","r") as f:
+  kb = f.read()
+
+
+prompt = f"""
+you are Saveetha Campus foodie instructor executive your job is to provide answers to the questions asked by the customers,
+you should answer them in polite, if there is any questions out of the kb say you did not have that info, only refer the kb and prov:
+
+{kb}
+"""
+
+
+#Initialize chat with system instructions
+model = 'gemini-3.6-flash' # Updated model as per error message recommendation
+chat = client.chats.create(
+     model=model,
+     config={
+         'system_instruction': prompt
+    }
+)
+
+
+response = chat.send_message("I want to eat biriyani say any one best resturant ")
+print (response.text)
